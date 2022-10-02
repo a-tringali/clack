@@ -1,0 +1,5 @@
+// Data
+
+public class ClackData {
+    
+}
