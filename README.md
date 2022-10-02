@@ -1,2 +1,2 @@
-# clack-242
+# clack
  CS 242 Project
