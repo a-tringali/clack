@@ -1,43 +1,44 @@
 // Data
+import java.util.Date;
 
 public abstract class ClackData {
     private String username;
     private int type;
-    private Date date;  // date object, probably needs to be made
+    private Date date;
 
     // create a user
-    public ClackData(username, type){
-
+    public ClackData(String cUsername, int cType){
+        this.username = cUsername;
+        this.type = cType;
+        this.date = new Date();
     }
 
     // create an anonymous user
-    public ClackData(type){
-
+    public ClackData(int cType){
+        this("anon", cType);
     }
 
     // default constructor
     public ClackData(){
-
+        this("anon", 123456);
     }
 
     // return the type
-    public void getType(){
-
+    public int getType(){
+        return this.type;
     }
 
     // return the username
-    public void getUserName(){
-
+    public String getUserName(){
+        return this.username;
     }
 
     // return the date
-    public void getDate(){
-
+    public Date getDate(){
+        return this.date; // revisit
     }
 
     // return data
-    public void getData(){
-
-    }
+    abstract void getData();
 
 }
