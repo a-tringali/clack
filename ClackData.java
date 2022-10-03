@@ -1,27 +1,42 @@
 // Data
 
-public class ClackData {
+public abstract class ClackData {
     private String username;
     private int type;
     private Date date;  // date object, probably needs to be made
 
     // create a user
-    ClackData(username, type){
+    public ClackData(username, type){
 
     }
 
     // create an anonymous user
-    ClackData(type){
+    public ClackData(type){
 
     }
 
     // default constructor
-    ClackData(){
+    public ClackData(){
 
     }
 
     // return the type
-    getType(){
+    public void getType(){
+
+    }
+
+    // return the username
+    public void getUserName(){
+
+    }
+
+    // return the date
+    public void getDate(){
+
+    }
+
+    // return data
+    public void getData(){
 
     }
 
