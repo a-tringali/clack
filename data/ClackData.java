@@ -1,3 +1,6 @@
+// Data Class for Clack
+// Andrew Tringali 10/3/22
+
 // Data
 package data;
 
@@ -9,6 +12,11 @@ public abstract class ClackData {
     private String username;
     private int type;
     private Date date;
+
+    public static final int CONSTANT_LISTUSERS = 0;
+    public static final int CONSTANT_LOGOUT = 1;
+    public static final int CONSTANT_SENDMESSAGE = 2;
+    public static final int CONSTANT_SENDFILE = 3; 
 
     /**
      * Creates a user with name "username," account type "cType"
@@ -27,27 +35,36 @@ public abstract class ClackData {
         this("anon", cType);
     }
 
-    // default constructor
+    /**
+     * Default constructor with logout 
+    */
     public ClackData(){
-        this("anon", 123456);
+        this("anon", CONSTANT_LOGOUT);
     }
 
-    // return the type
+    /**
+     * Returns the type
+    */
     public int getType(){
         return this.type;
     }
 
-    // return the username
+    /**
+     * Returns the username
+    */
     public String getUserName(){
         return this.username;
     }
 
-    // return the date
+    /**
+     * Returns the date
+    */
     public Date getDate(){
-        return this.date; // revisit
+        return this.date; // returns a reference, not a copy
     }
 
-    // return data
+    /**
+     * Placeholder data function- overridden in MessageClackData/FileClackData
+    */
     abstract String getData();
-
 }
