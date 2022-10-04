@@ -11,7 +11,7 @@ public abstract class ClackData {
     private int type;
     private Date date;
 
-    // 
+    // type variable constants
     public static final int CONSTANT_LISTUSERS = 0;
     public static final int CONSTANT_LOGOUT = 1;
     public static final int CONSTANT_SENDMESSAGE = 2;
