@@ -2,18 +2,25 @@
 import java.util.Date;
 
 public abstract class ClackData {
+    
+    // members
     private String username;
     private int type;
     private Date date;
 
-    // create a user
+    /**
+     * Creates a user with name "username," account type "cType"
+     * Date is automatically created based on the current time
+    */
     public ClackData(String cUsername, int cType){
         this.username = cUsername;
         this.type = cType;
         this.date = new Date();
     }
 
-    // create an anonymous user
+    /**
+     * If an account name isn't specified, create an anonymous account
+    */
     public ClackData(int cType){
         this("anon", cType);
     }
@@ -39,6 +46,6 @@ public abstract class ClackData {
     }
 
     // return data
-    abstract void getData();
+    abstract String getData();
 
 }
