@@ -11,16 +11,14 @@ public class FileClackData extends data.ClackData {
     /*
      * Passes given username and action type to superconstructor
      * Also create FileClackData subobject with filename "cFileName" and
-     * fileContents set to null
+     * fileContents set to an empty string (test will fail if null)
      */
 
     public FileClackData(String cUsername, String cFileName, int type){
         super(cUsername, type);
         this.fileName = cFileName;
-        this.fileContents = null;
+        this.fileContents = "";
     }
-
-
 
     public FileClackData(){
         super();
@@ -64,13 +62,15 @@ public class FileClackData extends data.ClackData {
     /*
      * hashCode() override
      */
-    public int hashCode() {
-        return 0; // rewrite
+    @Override
+    public int hashCode(){
+        return super.getUserName().hashCode() ^ super.getType() ^ super.getDate().hashCode() ^ fileName.hashCode() ^ fileContents.hashCode();
     }
 
     /*
      * equals() override
      */
+    @Override
     public boolean equals(Object other){
         FileClackData otherData = (FileClackData)other;
         return this.fileName == otherData.fileName && this.fileContents == otherData.fileContents && this.getUserName() == otherData.getUserName() && this.getType() == otherData.getType() && this.getDate() == otherData.getDate(); // revisit this later
@@ -80,6 +80,7 @@ public class FileClackData extends data.ClackData {
      * toString() override
      * returns a full description of the class with all instance variables (including those in the super class)
      */
+    @Override
     public String toString(){
         return "username: " + super.getUserName() 
         + "\ntype: " + super.getType() 

@@ -16,7 +16,7 @@ test: build
 
 doc:
 	echo Compiling documentation
-	javadoc -d doc */*.java
+	javadoc -d doc data/*.java main/*.java
 
 clean:
 	rm -rf */.class doc classes

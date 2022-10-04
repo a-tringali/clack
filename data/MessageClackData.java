@@ -36,13 +36,15 @@ public class MessageClackData extends ClackData {
     /*
      * hashcode() override
      */
-    public int hashCode() {
-        return 0; // rewrite
+    @Override
+    public int hashCode(){
+        return super.getUserName().hashCode() ^ super.getType() ^ super.getDate().hashCode() ^ message.hashCode();
     }
-
+    
     /*
      * equals() override
      */
+    @Override
     public boolean equals(Object other){
         MessageClackData otherData = (MessageClackData)other;
         return this.message == otherData.message && this.getUserName() == otherData.getUserName() && this.getType() == otherData.getType() && this.getDate() == otherData.getDate(); // revisit this later
@@ -52,6 +54,7 @@ public class MessageClackData extends ClackData {
      * toString() override
      * returns a full description of the class with all instance variables (including those in the super class)
      */
+    @Override
     public String toString(){
         return "username: " + super.getUserName() 
         + "\ntype: " + super.getType() 
