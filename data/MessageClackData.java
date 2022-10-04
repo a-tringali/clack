@@ -1,5 +1,5 @@
 // Message Data
-
+package data;
 public class MessageClackData extends ClackData {
     
     //  members

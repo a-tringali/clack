@@ -1,6 +1,7 @@
 // File Data
+package data;
 
-public class FileClackData extends ClackData {
+public class FileClackData extends data.ClackData {
     
     private String fileName;
     private String fileContents;
