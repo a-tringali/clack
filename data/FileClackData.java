@@ -20,9 +20,7 @@ public class FileClackData extends data.ClackData {
         this.fileContents = null;
     }
 
-    /*
-     * Default constructor: just calls the superconstructor
-     */
+
 
     public FileClackData(){
         super();
