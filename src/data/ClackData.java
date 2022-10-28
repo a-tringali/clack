@@ -109,8 +109,8 @@ public abstract class ClackData {
      */
 
     public Boolean verifyEncrypt() {
-        String phrase = "";
-        String key = "";
+        String phrase = "This is a simple test phrase";
+        String key = "TC1l0X";
         String encr = encrypt(phrase, key);
         String decr = decrypt(encr, key);
 
@@ -119,7 +119,7 @@ public abstract class ClackData {
         System.out.println("encrypted message: "+encr);
         System.out.println("decrypted message: "+decr);
 
-        // check if encryption is working
+        // check if encryption is working - return true or false
         if (decr.equals(phrase)) {
             return true;
         } else {

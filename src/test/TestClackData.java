@@ -27,6 +27,13 @@ public class TestClackData {
         // test getData
         System.out.println("File contents: " + fileTestOne.getData());
 
+        // verify encryption works
+       if (fileTestOne.verifyEncrypt() == true) {
+        System.out.println("Encryption test passed");
+       } else {
+        System.out.println("Encryption test failed");
+       }
+
         // test read/writefileContents (empty functions)
         fileTestOne.readFileContents();
         fileTestOne.writeFileContents();

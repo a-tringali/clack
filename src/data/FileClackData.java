@@ -56,13 +56,32 @@ public class FileClackData extends data.ClackData {
      * This is just a declaration, but it will eventually read from fileContents
      */
     public void readFileContents(){
-        // no code at this time, just declaration
+        // open file "filename"
+
+        // read contents to fileContents
+
+        // close file
+    }
+
+    /**
+     * Overloaded: Uses key to decrypt contents before reading
+     */
+
+    public void readFileContents(String dKey){
+        // lol watch this
     }
 
     /**
      * This is just a declaration, but it will eventually write to fileContents
      */
     public void writeFileContents(){
+        // no code at this time, just declaration
+    }
+
+    /**
+     * Overloaded: Uses key to encrypt contents before writing
+     */
+    public void writeFileContents(String eKey){
         // no code at this time, just declaration
     }
 
