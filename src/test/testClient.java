@@ -23,12 +23,18 @@ public class testClient {
     /**
      * tests all associated "get" functions
      */
-    public boolean testGets(){return ((clientOne.getHostName() == "localhost") && (clientOne.getUserName() == "Anonymous") && (clientOne.getPort() == 7000));}
+    public boolean testGets(){return ((clientOne.getHostName().equals("localhost")) && (clientOne.getUserName().equals("Anonymous")) && (clientOne.getPort() == 7000));}
 
     /**
      * checks hash output is consistent with equals
      */
     public boolean testHash(){return (clientOne.hashCode() == clientTwo.hashCode()) != (clientOne.hashCode() == clientThree.hashCode());}
+
+    public void testRun(){clientOne.start();}
+
+    /**
+     * Allows the user to run an instance of the client and perform debugging and testing
+     */
 
 
 }
