@@ -4,7 +4,6 @@ package main;
 import data.FileClackData;
 import data.MessageClackData;
 
-import java.text.FieldPosition;
 import java.util.Objects;
 import java.util.Scanner;
 

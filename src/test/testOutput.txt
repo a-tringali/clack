@@ -1,4 +1,4 @@
-Command line output of testClient
+Command line output of testClient as directed
 
 Expected error occurred
 clackClient1 getUserName(): testUser1

@@ -126,7 +126,7 @@ public class testClient {
         }
 
         /**
-         * Allows the user to run an instance of the client and perform debugging and testing
+         * Runs assorted tests on the client then allows for manual testing with start
          */
 
 
