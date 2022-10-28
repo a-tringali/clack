@@ -2,6 +2,7 @@
 // Andrew Tringali 10/28/22
 
 package data;
+import java.io.*;
 
 public class FileClackData extends data.ClackData {
     
@@ -53,36 +54,89 @@ public class FileClackData extends data.ClackData {
     }
 
     /**
-     * This is just a declaration, but it will eventually read from fileContents
+     * Reads contents of file fileName to fileContents
      */
-    public void readFileContents(){
-        // open file "filename"
+    public void readFileContents() throws IOException {
+        File filedata = new File(fileName);
+        FileReader read = new FileReader(filedata);
+        int i;
+        String readData = "";
 
-        // read contents to fileContents
-
-        // close file
+        try {
+            while ((i = read.read()) != -1) {
+                readData = readData + (char) i;
+            }
+            fileContents = readData;
+        } catch (FileNotFoundException missingFile) {
+            System.err.println("Warning: File missing");
+            throw new FileNotFoundException("Unable to find target file");
+        } catch (IOException errorIO) {
+            System.err.println("Warning: Error reading data from file");
+            throw new IOException("Unable to read data from file");
+        } finally {
+            read.close();
+        }
     }
 
     /**
      * Overloaded: Uses key to decrypt contents before reading
      */
 
-    public void readFileContents(String dKey){
-        // lol watch this
-    }
+    public void readFileContents(String key) throws IOException {
+        File filedata = new File(fileName);
+        FileReader read = new FileReader(filedata);
+        int i;
+        String readData = "";
 
+        try {
+            while ((i = read.read()) != -1) {
+                readData = readData + (char) i;
+            }
+            // Set fileContents to decrypted string
+            fileContents = super.decrypt(readData, key);
+        } catch (FileNotFoundException missingFile) {
+            System.err.println("Warning: File missing");
+            throw new FileNotFoundException("Unable to find target file" + fileName);
+        } catch (IOException errorIO) {
+            System.err.println("Warning: Error reading data from file");
+            throw new IOException("Unable to read data from file" );
+        } finally {
+            read.close();
+        }
+    }
     /**
-     * This is just a declaration, but it will eventually write to fileContents
+     * Writes contents of fileContents to file fileName
      */
-    public void writeFileContents(){
-        // no code at this time, just declaration
+    public void writeFileContents() throws IOException {
+        File filedata = new File(fileName);
+        FileWriter write = new FileWriter(filedata);
+
+        try {
+            write.write(fileContents);
+        } catch (IOException errorIO) {
+            System.err.println("Warning: Error writing data to file" + fileName);
+            throw new IOException("Unable to write data to file" + fileName);
+        } finally {
+            write.close();
+        }
     }
 
     /**
      * Overloaded: Uses key to encrypt contents before writing
      */
-    public void writeFileContents(String eKey){
-        // no code at this time, just declaration
+    public void writeFileContents(String key) throws IOException {
+        File filedata = new File(fileName);
+        FileWriter write = new FileWriter(filedata);
+
+        try {
+            String encryptedFileContents = super.encrypt(fileContents, key);
+            write.write(encryptedFileContents);
+        } catch (IOException errorIO) {
+            System.err.println("Warning: Error writing data to file " + fileName);
+            throw new IOException("Unable to write data to file" + fileName);
+        } finally {
+            write.close();
+        }
     }
 
     /**

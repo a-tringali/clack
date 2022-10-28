@@ -1,6 +1,7 @@
 package test;
 import data.*;
 
+// i call this one the spaghetti code special
 public class TestClackData {
     public static void main(String[] args) {
         //
