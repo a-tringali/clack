@@ -1,8 +1,11 @@
 // Client
 package main;
 
+import data.FileClackData;
 import data.MessageClackData;
 
+import java.text.FieldPosition;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class ClackClient {
@@ -15,7 +18,7 @@ public class ClackClient {
     private data.ClackData dataToSendToServer;
     private data.ClackData dataToReceiveFromServer;
 
-    private java.util.Scanner inFromStd;
+    private Scanner inFromStd = new Scanner(System.in);
 
     /**
      * Constructor for a given name, host and port
@@ -55,7 +58,6 @@ public class ClackClient {
     public void start(){
 
         closeConnection = false;
-        inFromStd = new Scanner(System.in);
         while (!closeConnection) {
             readClientData();
             dataToReceiveFromServer = dataToSendToServer;
@@ -67,13 +69,12 @@ public class ClackClient {
      * Undefined for now
      */
     public void readClientData(){
-
+        System.out.println("Enter your command/message\n");
         String input = inFromStd.nextLine();
         String[] split = input.split(" ", 3);
-        System.out.println("Enter your command/message\n");
         if (split[0].equals("DONE")) {closeConnection = true;}
         else if (split[0].equals("SENDFILE")) {
-            dataToSendToServer = new data.FileClackData(userName, split[1], 3);
+            dataToSendToServer = new FileClackData(userName, split[1], 3);
             java.io.File f = new java.io.File(split[1]);
             if (!f.canRead()) {
                 System.err.println("Couldn't open File\n");
@@ -85,7 +86,7 @@ public class ClackClient {
         else {
             dataToSendToServer = new MessageClackData(userName, input, 2);
         }
-
+    dataToReceiveFromServer = dataToSendToServer;
     }
 
     /**
@@ -125,27 +126,53 @@ public class ClackClient {
      * Overrides equals for valid comparisons
      */
     @Override
-    public boolean equals(Object o){
-        return this.hashCode() == o.hashCode() && this.getClass() == o.getClass();
+    public boolean equals(Object other){ // Once again correcting to be optimal
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof ClackClient)) {
+            return false;
+        }
+
+        // Casts other to be a ClackClient to access its instance variables.
+        ClackClient otherClackClient = (ClackClient) other;
+
+
+        return this.userName.equals(otherClackClient.userName) &&
+                this.hostName.equals(otherClackClient.hostName) &&
+                this.port == otherClackClient.port &&
+                this.closeConnection == otherClackClient.closeConnection &&
+                Objects.equals(this.dataToSendToServer, otherClackClient.dataToSendToServer) &&
+                Objects.equals(this.dataToReceiveFromServer, otherClackClient.dataToReceiveFromServer);
     }
 
     /**
      * Overrides hashcode for consistency with equals
      */
     @Override
-    public int hashCode(){return this.port + this.userName.hashCode() + this.hostName.hashCode() + this.dataToReceiveFromServer.hashCode() + this.dataToSendToServer.hashCode();}
+    public int hashCode(){int result = 23;
+
+        // Correcting for optimal performance
+        result = 31 * result + Objects.hashCode(this.userName);
+        result = 31 * result + Objects.hashCode(this.hostName);
+        result = 31 * result + this.port;
+        result = 31 * result + Objects.hashCode(this.closeConnection);
+        result = 31 * result + Objects.hashCode(this.dataToSendToServer);
+        result = 31 * result + Objects.hashCode(this.dataToReceiveFromServer);
+
+        return result;}
 
     /**
      * Returns all values in string form
      */
     @Override
-    public String toString(){
-        return "Username: " + this.userName +
-                "\nHostname: " + this.hostName +
-                "\nPort: " + this.port +
-                "\nData To Receive: " + dataToSendToServer.toString() +
-                "\nData To Send: " + dataToReceiveFromServer.toString() +
-                "\nDefault Port: " + this.DEFAULT_PORT +
-                "\nConnection Status: " + this.closeConnection;
+    public String toString(){ //Correcting for optimal performance
+        return "This instance of ClackClient has the following properties:\n"
+                + "Username: " + this.userName + "\n"
+                + "Host name: " + this.hostName + "\n"
+                + "Port number: " + this.port + "\n"
+                + "Connection status: " + (this.closeConnection ? "Closed" : "Open") + "\n"
+                + "Data to send to the server: " + this.dataToSendToServer + "\n"
+                + "Data to receive from the server: " + this.dataToReceiveFromServer + "\n";
     }
 }
