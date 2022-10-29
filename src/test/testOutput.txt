@@ -172,7 +172,8 @@ Data to receive from the server: null
 Enter your command/message
 
 SENDFILE file
-Couldn't open File
+Couldn't open File //expected since I'm looking for a fake file - assuming that the method works
+//since it will be tested with data
 
 No data to retrieve
 
