@@ -10,7 +10,6 @@ public class TestClackData {
         // test FileClackData
         //
         FileClackData fileTestOne = new FileClackData("andy", "filename", ClackData.CONSTANT_SENDFILE);
-        FileClackData fileTestTwo = new FileClackData();
 
         // BEGIN SUPERCLASS TESTING
         // test getType()
@@ -34,6 +33,9 @@ public class TestClackData {
             System.out.println("Exception when testing readFileContents");
          }
         
+        // test getData
+        System.out.println("File contents: " + fileTestOne.getData());
+
          // test writeFileContents()
          try {
             fileTestOne.writeFileContents();
@@ -41,9 +43,6 @@ public class TestClackData {
             System.out.println("Exception when testing writeFileContents");
          }
         
- 
-         // test getData
-         System.out.println("File contents: " + fileTestOne.getData());
 
          // verify encryption works
         if (fileTestOne.verifyEncrypt() == true) {
@@ -53,21 +52,23 @@ public class TestClackData {
         }
 
         // test writeFileContents() with encryption
-        try {
-            fileTestOne.readFileContents("139kx");
-         } catch (IOException exc) {
-            System.out.println("Exception when testing readFileContents");
-         }
-        
-
-        // test readFileContents() with decryption
+        fileTestOne.setFileName("test_encrypted.txt");
         try {
             fileTestOne.writeFileContents("139kx");
          } catch (IOException exc) {
             System.out.println("Exception when testing writeFileContents");
          }
 
+        System.out.println("File contents (encrypted, NOT readable!): \n" + fileTestOne.getData());
 
+        // test readFileContents() with decryption
+        try {
+            fileTestOne.readFileContents("139kx");
+         } catch (IOException exc) {
+            System.out.println("Exception when testing readFileContents");
+        }
+
+        System.out.println("File contents (decrypted): \n" + fileTestOne.getData());
 
 
         // test hashCode()
