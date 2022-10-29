@@ -53,19 +53,23 @@ public class TestClackData {
         }
 
         // test writeFileContents() with encryption
-        try {
-            fileTestOne.readFileContents("139kx");
-         } catch (IOException exc) {
-            System.out.println("Exception when testing readFileContents");
-         }
-        
-
-        // test readFileContents() with decryption
+        fileTestOne.setFileName("test_encrypted.txt");
         try {
             fileTestOne.writeFileContents("139kx");
          } catch (IOException exc) {
             System.out.println("Exception when testing writeFileContents");
          }
+
+        System.out.println("File contents (encrypted, NOT readable!): \n" + fileTestOne.getData());
+
+        // test readFileContents() with decryption
+        try {
+            fileTestOne.readFileContents("139kx");
+         } catch (IOException exc) {
+            System.out.println("Exception when testing readFileContents");
+        }
+
+        System.out.println("File contents (decrypted): \n" + fileTestOne.getData());
 
 
 /**
