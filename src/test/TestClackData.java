@@ -34,6 +34,9 @@ public class TestClackData {
             System.out.println("Exception when testing readFileContents");
          }
         
+        // test getData
+        System.out.println("File contents: " + fileTestOne.getData());
+
          // test writeFileContents()
          try {
             fileTestOne.writeFileContents();
@@ -41,9 +44,6 @@ public class TestClackData {
             System.out.println("Exception when testing writeFileContents");
          }
         
- 
-         // test getData
-         System.out.println("File contents: " + fileTestOne.getData());
 
          // verify encryption works
         if (fileTestOne.verifyEncrypt() == true) {
@@ -68,7 +68,7 @@ public class TestClackData {
          }
 
 
-
+/**
 
         // test hashCode()
         System.out.println("hashCode: " + fileTestOne.hashCode());
@@ -115,5 +115,6 @@ public class TestClackData {
 
         // test toString()
         System.out.println(messageTestOne.toString());
+    */
     }
 }
