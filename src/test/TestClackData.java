@@ -10,7 +10,6 @@ public class TestClackData {
         // test FileClackData
         //
         FileClackData fileTestOne = new FileClackData("andy", "filename", ClackData.CONSTANT_SENDFILE);
-        FileClackData fileTestTwo = new FileClackData();
 
         // BEGIN SUPERCLASS TESTING
         // test getType()
@@ -72,8 +71,6 @@ public class TestClackData {
         System.out.println("File contents (decrypted): \n" + fileTestOne.getData());
 
 
-/**
-
         // test hashCode()
         System.out.println("hashCode: " + fileTestOne.hashCode());
 
@@ -119,6 +116,5 @@ public class TestClackData {
 
         // test toString()
         System.out.println(messageTestOne.toString());
-    */
     }
 }
