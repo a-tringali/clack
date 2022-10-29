@@ -4,6 +4,8 @@ package main;
 import data.FileClackData;
 import data.MessageClackData;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -73,18 +75,14 @@ public class ClackClient {
         String[] split = input.split(" ", 3);
         if (split[0].equals("DONE")) {closeConnection = true;}
         else if (split[0].equals("SENDFILE")) {
-            dataToSendToServer = new FileClackData(userName, split[1], 3);
-            java.io.File f = new java.io.File(split[1]);
-            if (!f.canRead()) {
-                System.err.println("Couldn't open File\n");
-                dataToSendToServer = null;
+            data.FileClackData tempData = new FileClackData(userName, split[1], 3);
+            try {tempData.readFileContents(ENCRYPTION_KEY);}
+            catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
         }
         else if (input.equals("LISTUSERS")) {} //Do nothing - DO NOT CALL
-        else {
-            dataToSendToServer = new MessageClackData(userName, input, 2);
-        }
+        else {dataToSendToServer = new MessageClackData(userName, input, 2);}
     dataToReceiveFromServer = dataToSendToServer;
     }
 
