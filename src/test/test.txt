@@ -1,0 +1,2 @@
+This is a test file containing some information.
+It's just a few English sentences, but that's probably adequate.

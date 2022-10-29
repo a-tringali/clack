@@ -1,4 +1,6 @@
 package test;
+import java.io.IOException;
+
 import data.*;
 
 // i call this one the spaghetti code special
@@ -22,22 +24,51 @@ public class TestClackData {
         // END SUPERCLASS TESTING
 
         // set and get filename
-        fileTestOne.setFileName("TestFileOne");
-        System.out.println("Name of file: " + fileTestOne.getFileName());
+         fileTestOne.setFileName("test.txt");
+         System.out.println("Name of file: " + fileTestOne.getFileName());
 
-        // test getData
-        System.out.println("File contents: " + fileTestOne.getData());
+         // test readFileContents()
+         try {
+            fileTestOne.readFileContents();
+         } catch (IOException exc) {
+            System.out.println("Exception when testing readFileContents");
+         }
+        
+         // test writeFileContents()
+         try {
+            fileTestOne.writeFileContents();
+         } catch (IOException exc) {
+            System.out.println("Exception when testing writeFileContents");
+         }
+        
+ 
+         // test getData
+         System.out.println("File contents: " + fileTestOne.getData());
 
-        // verify encryption works
-       if (fileTestOne.verifyEncrypt() == true) {
-        System.out.println("Encryption test passed");
-       } else {
-        System.out.println("Encryption test failed");
-       }
+         // verify encryption works
+        if (fileTestOne.verifyEncrypt() == true) {
+            System.out.println("Encryption test passed");
+        } else {
+            System.out.println("Encryption test failed");
+        }
 
-        // test read/writefileContents (empty functions)
-        fileTestOne.readFileContents();
-        fileTestOne.writeFileContents();
+        // test writeFileContents() with encryption
+        try {
+            fileTestOne.readFileContents("139kx");
+         } catch (IOException exc) {
+            System.out.println("Exception when testing readFileContents");
+         }
+        
+
+        // test readFileContents() with decryption
+        try {
+            fileTestOne.writeFileContents("139kx");
+         } catch (IOException exc) {
+            System.out.println("Exception when testing writeFileContents");
+         }
+
+
+
 
         // test hashCode()
         System.out.println("hashCode: " + fileTestOne.hashCode());
