@@ -1,10 +1,12 @@
 // Data Class for Clack
-// Andrew Tringali 10/28/22
+// Andrew Tringali
+// Last modified 11/15/22
 
 package data;
+import java.io.Serializable;
 import java.util.Date;
 
-public abstract class ClackData {
+public abstract class ClackData implements Serializable {
     
     // members
     private String username;
