@@ -1,5 +1,14 @@
 // Server
+// Henry Rausch
+// Modified by Andrew Tringali 11/15/22
+
 package main;
+import data.ClackData;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class ClackServer {
 
     static final int DEFAULT_PORT = 7000;
@@ -8,13 +17,24 @@ public class ClackServer {
     private data.ClackData dataToReceiveFromClient;
     private data.ClackData dataToSendToClient;
 
+    private ObjectInputStream inFromClient;
+    private ObjectOutputStream outToClient;
+
+    private ServerSocket servSock;
+    private Socket cliSock;
+
     /**
      * Constructor for a given port
      */
-    public ClackServer(int port){
+    public ClackServer(int port) throws IllegalArgumentException {
+        if (port < 1024) {
+            throw new IllegalArgumentException("Error: IllegalArgumentException (Is the port number less then 1024?)");
+        }
         this.port = port;
         this.dataToReceiveFromClient = null;
         this.dataToSendToClient = null;
+        this.inFromClient = null;
+        this.outToClient = null;
     }
 
     /**
@@ -23,19 +43,56 @@ public class ClackServer {
     public ClackServer(){this(DEFAULT_PORT);}
 
     /**
-     * Undefined as of now
+     * Gets connections from client and echoes client data
      */
-    public void start(){}
+    public void start() {
+        try {
+            servSock = new ServerSocket(port);
+            cliSock = servSock.accept();
+
+            inFromClient = new ObjectInputStream(cliSock.getInputStream());
+            outToClient = new ObjectOutputStream(cliSock.getOutputStream());
+
+            receiveData();
+            dataToSendToClient = dataToReceiveFromClient;
+            sendData();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            System.err.println("Error: IOException in ClackServer");
+        }
+        try {
+            servSock.close();
+            cliSock.close();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            System.err.println("Error: IOException when closing connections");
+        }
+    }
+    
+    /**
+     * Sends data to client without returning anything
+     */
+    public void sendData() {
+        try {
+            outToClient.writeObject(dataToSendToClient);
+            outToClient.flush();
+        } catch (IOException e) {
+            System.err.println("Error: IOException when sending data to client");
+        }
+    }
 
     /**
-     * Undefined as of now
+     * Receives data from client without returning anything
      */
-    public void sendData(){}
-
-    /**
-     * Undefined as of now
-     */
-    public void receiveData(){}
+    public void receiveData() {
+        try {
+            dataToReceiveFromClient = (ClackData) inFromClient.readObject();
+        } catch (IOException e) {
+            System.err.println("Error: IOException when receiving data from client");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error: ClassNotFoundException when receiving data from client");
+        }
+    }
 
     /**
      * Returns the port value
@@ -63,5 +120,19 @@ public class ClackServer {
                 "\nConnection Closed: " + closeConnection +
                 "\nData To Send: " + dataToSendToClient.toString() +
                 "\nData To Receive: " + dataToReceiveFromClient.toString();
+    }
+
+
+    /**
+     * Main
+     */
+    public static void main(String[] args) {
+        ClackServer clckServ;
+        if (args.length == 1) {
+            clckServ = new ClackServer(Integer.parseInt(args[0]));
+        } else {
+            clckServ = new ClackServer();
+        }
+        clckServ.start();
     }
 }
