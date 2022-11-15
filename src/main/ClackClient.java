@@ -1,25 +1,60 @@
 // Client
 package main;
 
+import data.ClackData;
 import data.FileClackData;
 import data.MessageClackData;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class ClackClient {
+    /**
+     * Primary use of the client, allows for establishing a connection and operating said connection
+     * Pretty proud of this
+     * @param args
+     */
+    public static void main ( String[] args ) {
+        ClackClient clackClient;
+        if ( args.length == 0 ) {
+            clackClient = new ClackClient();
+        } else {
+            Scanner sc = new Scanner(args[0]);
+            sc.useDelimiter("@");
+            String userName = sc.next();
+            if (!sc.hasNext()) {
+                clackClient = new ClackClient(userName);
+            } else {
+                sc.useDelimiter("[@:]");
+                String hostName = sc.next();
+                if (!sc.hasNext()) {
+                    clackClient = new ClackClient(userName, hostName);
+                } else {
+                    int port = sc.nextInt();
+                    clackClient = new ClackClient(userName, hostName, port);
+                }
+            }
+            sc.close();
+        }
+        clackClient.start();
+    }
+
     static final int DEFAULT_PORT = 7000;
     static final String ENCRYPTION_KEY = "Test_Key";
-    private String userName;
-    private String hostName;
-    private int port;
+    private final String userName;
+    private final String hostName;
+    private final int port;
     private boolean closeConnection;
     private data.ClackData dataToSendToServer;
     private data.ClackData dataToReceiveFromServer;
+    private java.io.ObjectInputStream inFromServer;
+    private java.io.ObjectOutputStream outToServer;
+    private Scanner inFromStd;
+    private Socket skt;
 
-    private Scanner inFromStd = new Scanner(System.in);
 
     /**
      * Constructor for a given name, host and port
@@ -32,14 +67,14 @@ public class ClackClient {
         this.port = port;
         this.dataToReceiveFromServer = null;
         this.dataToSendToServer = null;
+        this.inFromServer = null;
+        this.outToServer = null;
     }
 
     /**
      * Constructor for a given name and host, uses DEFAULT_PORT
      */
-    public ClackClient(String userName, String hostName){
-        this(userName, hostName, DEFAULT_PORT);
-    }
+    public ClackClient(String userName, String hostName){this(userName, hostName, DEFAULT_PORT);}
 
     /**
      * Constructor for a given user, uses DEFAULT_PORT and localhost
@@ -56,19 +91,7 @@ public class ClackClient {
     /**
      * Undefined for now
      */
-    public void start(){
 
-        closeConnection = false;
-        while (!closeConnection) {
-            readClientData();
-            dataToReceiveFromServer = dataToSendToServer;
-            printData();
-        }
-    }
-
-    /**
-     * Undefined for now
-     */
     public void readClientData(){
         System.out.println("Enter your command/message\n");
         String input = inFromStd.nextLine();
@@ -81,26 +104,45 @@ public class ClackClient {
                 throw new RuntimeException(e);
             }
         }
-        else if (input.equals("LISTUSERS")) {} //Do nothing - DO NOT CALL
+        else if(input.equals("LISTUSERS")) {} //Do nothing - DO NOT CALL
         else {dataToSendToServer = new MessageClackData(userName, input, 2);}
-    dataToReceiveFromServer = dataToSendToServer;
     }
 
     /**
-     * Undefined for now
+     * Sends data to server
      */
-    public void sendData(){}
+    public void sendData(ClackData data) {
+        try {
+            outToServer.writeObject(data);
+        } catch ( InvalidClassException ice ) {
+            System.err.println("InvalidClassException");
+        } catch ( NotSerializableException nse) {
+            System.err.println("NotSerializableException");
+        } catch ( IOException ioe ) {
+            System.err.println ("IOException in sendData");
+        }
+    }
+    /**
+     * Pulls data from server
+     */
+    public ClackData receiveData() {
+        try {
+            dataToReceiveFromServer = (ClackData) inFromServer.readObject();
+        } catch ( ClassCastException cce ) {
+            System.err.println("ClassCastException");
+        } catch ( ClassNotFoundException cnf ) {
+            System.err.println("ClassNotFoundException");
+        } catch ( IOException ioe ) {
+            System.err.println("IOException in receiveData");
+        }
+        return dataToReceiveFromServer;
+    }
 
     /**
-     * Undefined for now
-     */
-    public void receiveData(){}
-
-    /**
-     * Undefined for now
+     * Intakes data from server
      */
     public void printData(){
-        if (dataToReceiveFromServer != null) {System.out.println(dataToReceiveFromServer.toString());}
+        if (dataToReceiveFromServer != null) {System.out.println(dataToReceiveFromServer);}
         else {System.err.println("No data to retrieve\n");}
     }
 
@@ -171,5 +213,29 @@ public class ClackClient {
                 + "Connection status: " + (this.closeConnection ? "Closed" : "Open") + "\n"
                 + "Data to send to the server: " + this.dataToSendToServer + "\n"
                 + "Data to receive from the server: " + this.dataToReceiveFromServer + "\n";
+    }
+
+    /**
+     * Start the program - initializes sockets and loops through data IO
+     */
+    public void start() {
+        try {
+            skt = new Socket(this.hostName, this.port);
+            this.outToServer = new ObjectOutputStream( skt.getOutputStream() );
+            this.inFromServer = new ObjectInputStream( skt.getInputStream() );
+
+        } catch ( UnknownHostException uhe ) {
+            System.err.println("UnknownHostException");
+        } catch ( IOException ioe ) {
+            System.err.println("IOException");
+        } catch ( IllegalArgumentException iae ) {
+            System.err.println("IllegalArgumentException");
+        }
+        while(!closeConnection){
+            readClientData();
+            sendData(dataToSendToServer);
+            dataToReceiveFromServer = receiveData();
+            printData();
+        }
     }
 }
