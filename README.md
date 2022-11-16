@@ -8,6 +8,12 @@ We will likely need to add some check once port is actually interacting with cod
 Null users would make it difficult to reference that given user, so we would have to simply make sure that there is a value for user
 in order to make sure it can be accessed.
 
+## Part 2
+
+#### Example of TestClackClient output.
+
+[PUT HERE]
+
 ## Part 3
 
 ### Below example was done on Andrew's computer in a terminal, using the compiled ClackClient and ClackServer .jar files. 
