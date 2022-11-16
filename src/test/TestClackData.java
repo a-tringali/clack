@@ -39,7 +39,7 @@ public class TestClackData {
          // test writeFileContents()
          try {
             fileTestOne.writeFileContents();
-         } catch (IOException exc) {
+         } catch (Exception exc) {
             System.out.println("Exception when testing writeFileContents");
          }
         
@@ -55,7 +55,7 @@ public class TestClackData {
         fileTestOne.setFileName("test_encrypted.txt");
         try {
             fileTestOne.writeFileContents("139kx");
-         } catch (IOException exc) {
+         } catch (Exception exc) {
             System.out.println("Exception when testing writeFileContents");
          }
 
@@ -89,6 +89,7 @@ public class TestClackData {
         //
         MessageClackData messageTestOne = new MessageClackData("andy", "this is a message", ClackData.CONSTANT_SENDMESSAGE);
         MessageClackData messageTestTwo = new MessageClackData();
+        MessageClackData messageTestThree = new MessageClackData("alex","another message lol","YesThisIsTheKey",ClackData.CONSTANT_SENDMESSAGE);
 
         // BEGIN SUPERCLASS TESTING
         // test getType()

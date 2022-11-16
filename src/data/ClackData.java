@@ -67,7 +67,12 @@ public abstract class ClackData implements Serializable {
     /**
      * Placeholder data function- overridden in MessageClackData/FileClackData
      */
-    abstract String getData();
+    public abstract String getData();
+
+    /**
+     * Overloaded in MessageClackData and FileClackData
+     */
+    public abstract String getData(String key);
 
     /**
      *  Encrypt: Takes input string and key, outputs encrypted string

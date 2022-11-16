@@ -107,35 +107,31 @@ public class FileClackData extends data.ClackData {
     /**
      * Writes contents of fileContents to file fileName
      */
-    public void writeFileContents() throws IOException {
+    public void writeFileContents() {
         File filedata = new File(fileName);
-        FileWriter write = new FileWriter(filedata);
-
         try {
+            FileWriter write = new FileWriter(filedata);
             write.write(fileContents);
-        } catch (IOException errorIO) {
-            System.err.println("Warning: Error writing data to file" + fileName);
-            throw new IOException("Unable to write data to file" + fileName);
-        } finally {
             write.close();
+        } catch (IOException errorIO) {
+            System.err.println(errorIO.getMessage());
+            System.err.println("Warning: Error writing data to file" + fileName);
         }
     }
 
     /**
      * Overloaded: Uses key to encrypt contents before writing
      */
-    public void writeFileContents(String key) throws IOException {
+    public void writeFileContents(String key) {
         File filedata = new File(fileName);
-        FileWriter write = new FileWriter(filedata);
 
         try {
+            FileWriter write = new FileWriter(filedata);
             String encryptedFileContents = super.encrypt(fileContents, key);
             write.write(encryptedFileContents);
+            write.close();
         } catch (IOException errorIO) {
             System.err.println("Warning: Error writing data to file " + fileName);
-            throw new IOException("Unable to write data to file" + fileName);
-        } finally {
-            write.close();
         }
     }
 
