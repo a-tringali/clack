@@ -14,8 +14,8 @@ public class ClackServer {
     static final int DEFAULT_PORT = 7000;
     final private int port;
     private boolean closeConnection;
-    private data.ClackData dataToReceiveFromClient;
-    private data.ClackData dataToSendToClient;
+    private ClackData dataToReceiveFromClient;
+    private ClackData dataToSendToClient;
 
     private ObjectInputStream inFromClient;
     private ObjectOutputStream outToClient;

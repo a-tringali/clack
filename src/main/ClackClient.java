@@ -48,10 +48,10 @@ public class ClackClient {
     private final String hostName;
     private final int port;
     private boolean closeConnection;
-    private data.ClackData dataToSendToServer;
-    private data.ClackData dataToReceiveFromServer;
-    private java.io.ObjectInputStream inFromServer;
-    private java.io.ObjectOutputStream outToServer;
+    private ClackData dataToSendToServer;
+    private ClackData dataToReceiveFromServer;
+    private ObjectInputStream inFromServer;
+    private ObjectOutputStream outToServer;
     private Scanner inFromStd;
     private Socket skt;
 
@@ -98,7 +98,7 @@ public class ClackClient {
         String[] split = input.split(" ", 3);
         if (split[0].equals("DONE")) {closeConnection = true;}
         else if (split[0].equals("SENDFILE")) {
-            data.FileClackData tempData = new FileClackData(userName, split[1], 3);
+            FileClackData tempData = new FileClackData(userName, split[1], 3);
             try {tempData.readFileContents(ENCRYPTION_KEY);}
             catch (IOException e) {
                 throw new RuntimeException(e);
@@ -219,23 +219,28 @@ public class ClackClient {
      * Start the program - initializes sockets and loops through data IO
      */
     public void start() {
+        // Made some small edits to make everything work -Andrew
         try {
+            inFromStd = new Scanner(System.in);
             skt = new Socket(this.hostName, this.port);
             this.outToServer = new ObjectOutputStream( skt.getOutputStream() );
             this.inFromServer = new ObjectInputStream( skt.getInputStream() );
-
+            while(!closeConnection){
+                readClientData();
+                sendData(dataToSendToServer);
+                dataToReceiveFromServer = receiveData();
+                printData();
+            }
         } catch ( UnknownHostException uhe ) {
+            System.err.println(uhe.getMessage());
             System.err.println("UnknownHostException");
         } catch ( IOException ioe ) {
+            System.err.println(ioe.getMessage());
             System.err.println("IOException");
         } catch ( IllegalArgumentException iae ) {
+            System.err.println(iae.getMessage());
             System.err.println("IllegalArgumentException");
         }
-        while(!closeConnection){
-            readClientData();
-            sendData(dataToSendToServer);
-            dataToReceiveFromServer = receiveData();
-            printData();
-        }
+
     }
 }
