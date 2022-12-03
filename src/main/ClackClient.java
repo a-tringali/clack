@@ -219,8 +219,13 @@ public class ClackClient {
      * Start the program - initializes sockets and loops through data IO
      */
     public void start() {
-        // Made some small edits to make everything work -Andrew
+        // #1 of Part 4 implemented -Andrew
         try {
+            // may not be 100% working
+            ClientServerSideListener clientServerSideListener = new ClientServerSideListener(this);
+            Thread thread = new Thread(clientServerSideListener);
+            thread.start();
+
             inFromStd = new Scanner(System.in);
             skt = new Socket(this.hostName, this.port);
             this.outToServer = new ObjectOutputStream( skt.getOutputStream() );
@@ -228,8 +233,6 @@ public class ClackClient {
             while(!closeConnection){
                 readClientData();
                 sendData(dataToSendToServer);
-                dataToReceiveFromServer = receiveData();
-                printData();
             }
         } catch ( UnknownHostException uhe ) {
             System.err.println(uhe.getMessage());
@@ -242,5 +245,9 @@ public class ClackClient {
             System.err.println("IllegalArgumentException");
         }
 
+    }
+
+    public boolean getCloseConnection() {
+        return closeConnection;
     }
 }
