@@ -239,3 +239,12 @@ Enter your command/message
 
 ### Why should a separate class receive data from the server and print it? Also, why is the class called a 'listener'?
 It's to separate the code that receives & prints the data from the rest of ClackClient, which only executes when the user sends a message. The class is called a listener because it waits for an event to happen before executing- in this case, receiving data from the server. -Andrew
+
+###Explain why you need a separate thread for each client, and why you cannot handle all clients in the main server thread. Conceptually, why is the listener class ‘ClientSideServerListener’ different from the class ‘ServerSideClientIO’?
+Each client naturally needs its own thread so that it can function as its own entity. You can't handle all clients in one thread so that you can listen to all of them at once. Clients only need to send and receive from the server, where the server processes and distributes that information.
+
+###Explain why the broadcast() and remove() methods are synchronized. You may find it easier to answer this question after completing all programming.
+They are synchronized to ensure that all of the operations of one are complete before the others begin. Without this, you could have issues with messages getting incorrectly interpreted. 
+
+###Discuss all new methods and new code in existing methods that you wrote to handle LISTUSERS.
+I tried to handle this as simply as possible and just display a message from the server where the contents of the message were the userlist. I did this by adding code to the clause for listusers such that a new clackdata type ListUserData would be passed (although I ended up not actually using this datatype for display, opting to show it as a message instead). As a result of this, I just needed to track in an ArrayList the list of users, and then add a condition where if the server is passed a userlist item it will create its own userlist message instead.
