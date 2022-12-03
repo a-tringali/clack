@@ -219,7 +219,7 @@ public class ClackClient {
      * Start the program - initializes sockets and loops through data IO
      */
     public void start() {
-        // #1 of Part 4 implemented -Andrew
+        // #1 of Part 4 implemented & fixed -Andrew
         try {
             inFromStd = new Scanner(System.in);
             skt = new Socket(this.hostName, this.port);
