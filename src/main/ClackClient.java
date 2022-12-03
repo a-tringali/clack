@@ -221,15 +221,13 @@ public class ClackClient {
     public void start() {
         // #1 of Part 4 implemented -Andrew
         try {
-            // may not be 100% working
-            ClientServerSideListener clientServerSideListener = new ClientServerSideListener(this);
-            Thread thread = new Thread(clientServerSideListener);
-            thread.start();
-
             inFromStd = new Scanner(System.in);
             skt = new Socket(this.hostName, this.port);
             this.outToServer = new ObjectOutputStream( skt.getOutputStream() );
             this.inFromServer = new ObjectInputStream( skt.getInputStream() );
+            ClientServerSideListener clientServerSideListener = new ClientServerSideListener(this);
+            Thread thread = new Thread(clientServerSideListener);
+            thread.start();
             while(!closeConnection){
                 readClientData();
                 sendData(dataToSendToServer);
