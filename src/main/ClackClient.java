@@ -3,6 +3,7 @@ package main;
 
 import data.ClackData;
 import data.FileClackData;
+import data.ListUsersData;
 import data.MessageClackData;
 
 import java.io.*;
@@ -104,7 +105,7 @@ public class ClackClient {
                 throw new RuntimeException(e);
             }
         }
-        else if(input.equals("LISTUSERS")) {} //Do nothing - DO NOT CALL
+        else if(input.equals("LISTUSERS")) {dataToSendToServer = new ListUsersData("");}
         else {dataToSendToServer = new MessageClackData(userName, input, 2);}
     }
 
