@@ -234,3 +234,10 @@ date: Tue Nov 15 21:08:07 EST 2022
 message: Hello world! This is a test of ClackClient and ClackServer working together! 
 
 Enter your command/message 
+
+## Part 4
+
+# Why should a separate class receive data from the server and print it? Also, why is the class called a 'listener'?
+It's to separate the code that receives & prints the data from the rest of ClackClient, which only executes when the user sends a message. 
+
+The class is called a listener because it waits for an even to happen before executing- in this case, receiving data from the server.
